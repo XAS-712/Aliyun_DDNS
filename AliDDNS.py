@@ -2,6 +2,7 @@
 
 import time
 from os import popen
+import urllib
 from re import compile
 from sys import stdout
 from requests import post
@@ -45,13 +46,37 @@ def check_record_id(dns_rr, dns_domain):
     else:
         result = -1							# 返回失败数值
     return result
-
-def my_ip():
+  
+def my_ip1():
     get_ip_method = popen('curl -s pv.sohu.com/cityjson?ie=utf-8')					# 获取外网 IP 地址
     get_ip_responses = get_ip_method.readlines()[0]									# 读取 HTTP 请求值
     get_ip_pattern = compile(r'(?<![\.\d])(?:\d{1,3}\.){3}\d{1,3}(?![\.\d])')	# 正则匹配 IP
     get_ip_value = get_ip_pattern.findall(get_ip_responses)[0]						# 寻找匹配值
     return get_ip_value																# 返回 IP 地址
+  
+def my_ip2():
+    opener = urllib.urlopen('http://whatismyip.akamai.com')     
+    strg = opener.read()  
+    return strg
+  
+def my_ip3():
+    opener = urllib.urlopen('http://www.net.cn/static/customercare/yourip.asp')     
+    strg = opener.read()
+    strg = strg.decode('gbk')
+    ipaddr = re.search('\d+\.\d+\.\d+\.\d+',strg).group(0)        
+    return ipaddr
+  
+def my_ip()
+#    ip1=my_ip1()
+    ip2=my_ip2()
+#    ip3=my_ip3()
+#    if ip1==ip2==ip3:
+#        print("Get IP ... Success.")
+#        return ip1
+#    else:
+#        print("Get IP ... Warning.IPs aren't the same.")
+#        return ip2
+    return ip2
 
 def old_ip(dns_record_id):
     request = DescribeDomainRecordInfoRequest.DescribeDomainRecordInfoRequest()
