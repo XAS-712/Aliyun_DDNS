@@ -14,11 +14,9 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 def ipaddress():
-    opener = urllib.urlopen('http://www.net.cn/static/customercare/yourip.asp')     
-    strg = opener.read()
-    strg = strg.decode('gbk')
-    ipaddr = re.search('\d+\.\d+\.\d+\.\d+',strg).group(0)        
-    return ipaddr
+    opener = urllib.urlopen('http://whatismyip.akamai.com')     
+    strg = opener.read()  
+    return strg
 
 def sign(parameters):
     sortedParameters = sorted(parameters.items(), key=lambda parameters: parameters[0])
