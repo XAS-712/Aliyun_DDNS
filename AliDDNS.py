@@ -16,14 +16,14 @@ from aliyunsdkalidns.request.v20150109 import DescribeDomainRecordsRequest
 from aliyunsdkalidns.request.v20150109 import DescribeDomainRecordInfoRequest
 
 rc_rr = "www"				# 指代二级域名（子域名，空则使用 @ 代替）
-rc_domain = "tianhao.party"	# 指代完整域名，若未配置阿里云 NameServer 解析修改也无效
+rc_domain = "example.org"	# 指代完整域名，若未配置阿里云 NameServer 解析修改也无效
 rc_format = "json"			# 指定返回数据格式，目前本例使用 JSON 数据
 rc_type = "A"				# 指定修改记录类型，目前本例使用 A 记录
 rc_ttl = "600"				# 指定修改 TTL 值，目前本例使用 600 秒
 rc_format = "json"			# 使用 JSON 返回数据，也可以填写为 XML
 
-access_key_id = ""						# 这里为 Aliyun AccessKey 信息
-access_key_secret = ""	# 这里为 Aliyun AccessKey 信息
+access_key_id = "LTAI3NceFGh9wqRQ"						# 这里为 Aliyun AccessKey 信息
+access_key_secret = "5jnZIA7lSuDN5NtndoEkU8PIpMImiC"	# 这里为 Aliyun AccessKey 信息
 
 clt = client.AcsClient(access_key_id, access_key_secret, 'cn-shanghai')
 
@@ -68,7 +68,7 @@ def my_ip_chinanetwork():
     opener = urllib.urlopen('http://www.net.cn/static/customercare/yourip.asp')
     strg = opener.read()
     strg = strg.decode('gbk')
-    ipaddr = re.search('\d+\.\d+\.\d+\.\d+',strg).group(0) 
+    ipaddr = re.search('\d\.\d\.\d\.\d',strg).group(0)
     return ipaddr
 
 def my_ip()
@@ -114,13 +114,11 @@ def update_dns(dns_rr, dns_type, dns_value, dns_record_id, dns_ttl):
 
 def send_mail(content):
     return post(
-        "https://api.mailgun.net/v3/mail.tianhao.link/messages",
-        auth=("api", "key-5edc8ba3820b444c1df6847a6a66b0d7"),
-        data={"from": "Tianhao Wu <i@mail.tianhao.link>",
-              "to": ["wth88888888@gmail.com", "AndroidOL@vip.qq.com"],
-              "subject": "[Python Report] IP update from Dell-M5110",
-              "text": content})
-
+        "https://api.mailgun.net/v3/example.org/messages",
+        auth=("api", "key-"),
+        data={"from": "Your Name <me@mail.example.org>",
+              "to": ["me@example.org", "admin@example.org"],
+              "subject": "[Python Report] IP update from ISP",
 def get_time():
     return "[" + time.strftime('#%y%m%d-%H:%M', time.localtime(time.time())) + "]"
 
