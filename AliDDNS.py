@@ -22,8 +22,8 @@ rc_type = "A"				# 指定修改记录类型，目前本例使用 A 记录
 rc_ttl = "600"				# 指定修改 TTL 值，目前本例使用 600 秒
 rc_format = "json"			# 使用 JSON 返回数据，也可以填写为 XML
 
-access_key_id = ""						# 这里为 Aliyun AccessKey 信息
-access_key_secret = ""	# 这里为 Aliyun AccessKey 信息
+access_key_id = ""			# 这里为 Aliyun AccessKey 信息
+access_key_secret = ""		# 这里为 Aliyun AccessKey 信息
 
 clt = client.AcsClient(access_key_id, access_key_secret, 'cn-shanghai')
 
@@ -68,7 +68,7 @@ def my_ip_chinanetwork():
     opener = urllib.urlopen('http://www.net.cn/static/customercare/yourip.asp')
     strg = opener.read()
     strg = strg.decode('gbk')
-    ipaddr = re.search('\d\.\d\.\d\.\d',strg).group(0)
+    ipaddr = re.search('\d+\.\d+\.\d+\.\d+',strg).group(0)
     return ipaddr
 
 def my_ip()
@@ -119,6 +119,7 @@ def send_mail(content):
         data={"from": "Your Name <me@mail.example.org>",
               "to": ["me@example.org", "admin@example.org"],
               "subject": "[Python Report] IP update from ISP",
+              "text": content})
 def get_time():
     return "[" + time.strftime('#%y%m%d-%H:%M', time.localtime(time.time())) + "]"
 
