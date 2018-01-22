@@ -1,8 +1,8 @@
-# -- coding: utf-8 --
+# -*- coding: UTF-8 -*-
 
 import time
-from os import popen
 import urllib
+from os import popen
 from re import compile
 from sys import stdout
 from requests import post
@@ -16,14 +16,14 @@ from aliyunsdkalidns.request.v20150109 import DescribeDomainRecordsRequest
 from aliyunsdkalidns.request.v20150109 import DescribeDomainRecordInfoRequest
 
 rc_rr = "www"				# 指代二级域名（子域名，空则使用 @ 代替）
-rc_domain = "example.org"	# 指代完整域名，若未配置阿里云 NameServer 解析修改也无效
+rc_domain = "tianhao.party"	# 指代完整域名，若未配置阿里云 NameServer 解析修改也无效
 rc_format = "json"			# 指定返回数据格式，目前本例使用 JSON 数据
 rc_type = "A"				# 指定修改记录类型，目前本例使用 A 记录
 rc_ttl = "600"				# 指定修改 TTL 值，目前本例使用 600 秒
 rc_format = "json"			# 使用 JSON 返回数据，也可以填写为 XML
 
-access_key_id = ""						# 这里为 Aliyun AccessKey 信息
-access_key_secret = ""	# 这里为 Aliyun AccessKey 信息
+access_key_id = "LTAI3NceFGh9wqRQ"						# 这里为 Aliyun AccessKey 信息
+access_key_secret = "5jnZIA7lSuDN5NtndoEkU8PIpMImiC"	# 这里为 Aliyun AccessKey 信息
 
 clt = client.AcsClient(access_key_id, access_key_secret, 'cn-shanghai')
 
@@ -46,37 +46,43 @@ def check_record_id(dns_rr, dns_domain):
     else:
         result = -1							# 返回失败数值
     return result
-  
-def my_ip1():
+
+def my_ip_direct():
+    opener = urllib.urlopen('https://wtfismyip.com/text')
+    strg = opener.read()
+    print strg
+
+def my_ip_json():
+    opener = urllib.urlopen('https://wtfismyip.com/json')
+    strg = json.loads(opener.read().replace('Fucking', 'Current'))
+    print strg['YourCurrentIPAddress']
+
+def my_ip_popen():
     get_ip_method = popen('curl -s pv.sohu.com/cityjson?ie=utf-8')					# 获取外网 IP 地址
     get_ip_responses = get_ip_method.readlines()[0]									# 读取 HTTP 请求值
-    get_ip_pattern = compile(r'(?<![\.\d])(?:\d{1,3}\.){3}\d{1,3}(?![\.\d])')	# 正则匹配 IP
+    get_ip_pattern = compile(r'(?<![\.\d])(?:\d{1,3}\.){3}\d{1,3}(?![\.\d])')		# 正则匹配 IP
     get_ip_value = get_ip_pattern.findall(get_ip_responses)[0]						# 寻找匹配值
     return get_ip_value																# 返回 IP 地址
-  
-def my_ip2():
-    opener = urllib.urlopen('http://whatismyip.akamai.com')     
-    strg = opener.read()  
-    return strg
-  
-def my_ip3():
-    opener = urllib.urlopen('http://www.net.cn/static/customercare/yourip.asp')     
+
+def my_ip_chinanetwork():
+    opener = urllib.urlopen('http://www.net.cn/static/customercare/yourip.asp')
     strg = opener.read()
     strg = strg.decode('gbk')
-    ipaddr = re.search('\d+\.\d+\.\d+\.\d+',strg).group(0)        
+    ipaddr = re.search('\d\.\d\.\d\.\d',strg).group(0)
     return ipaddr
-  
+
 def my_ip()
-#    ip1=my_ip1()
-    ip2=my_ip2()
-#    ip3=my_ip3()
-#    if ip1==ip2==ip3:
-#        print("Get IP ... Success.")
-#        return ip1
-#    else:
-#        print("Get IP ... Warning.IPs aren't the same.")
-#        return ip2
-    return ip2
+    ip1 = my_ip_direct()
+    ip2 = my_ip_json()
+    ip3 = my_ip_popen()
+    ip4 = my_ip_chinanetwork()
+    # if ip1 == ip2 == ip3 == ip4:
+        # print("[Success] Verified IP Address...")
+        # return ip + random.randint(0,3)					# 开个玩笑
+    # else:
+        # print("[FAILED] No-Verified IP Address...")
+        # return ip1
+    return ip1
 
 def old_ip(dns_record_id):
     request = DescribeDomainRecordInfoRequest.DescribeDomainRecordInfoRequest()
@@ -108,11 +114,11 @@ def update_dns(dns_rr, dns_type, dns_value, dns_record_id, dns_ttl):
 
 def send_mail(content):
     return post(
-        "https://api.mailgun.net/v3/example.org/messages",
-        auth=("api", "key-"),
-        data={"from": "Your Name <me@mail.example.org>",
-              "to": ["me@example.org", "admin@example.org"],
-              "subject": "[Python Report] IP update from ISP",
+        "https://api.mailgun.net/v3/mail.tianhao.link/messages",
+        auth=("api", "key-5edc8ba3820b444c1df6847a6a66b0d7"),
+        data={"from": "Tianhao Wu <i@mail.tianhao.link>",
+              "to": ["wth88888888@gmail.com", "AndroidOL@vip.qq.com"],
+              "subject": "[Python Report] IP update from Dell-M5110",
               "text": content})
 
 def get_time():
