@@ -1,5 +1,5 @@
 # Aliyun_DDNS
-<h3>Run with Python2.7</h3>
+<h3>Run with Python2.7 OR 3.x（待重构）</h3>
 <h4>贡献者：@AndroidOL</h4>
 依赖 urllib 库，用于访问 API 以及获取地址<br />
 可选使用 aliyunsdkcore 简化本地操作，请使用 pip 安装<br />
