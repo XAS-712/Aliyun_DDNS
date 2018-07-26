@@ -140,10 +140,12 @@ def add_dns(Aliyun_API_DomainIP):
     Aliyun_API_Request = Request(Aliyun_API_URL, urlencode(Aliyun_API_Post))
     Aliyun_API_Response = urlopen(Aliyun_API_Request)
 
-def update_dns(Aliyun_API_RecordID, Aliyun_API_Enabled):
-    Aliyun_API_Post = AliyunAPIPOST('SetDomainRecordStatus')
+def update_dns(Aliyun_API_RecordID,Aliyun_API_DomainIP):
+    Aliyun_API_Post = AliyunAPIPOST('UpdateDomainRecord')
     Aliyun_API_Post['RecordId'] = Aliyun_API_RecordID
-    Aliyun_API_Post['Status'] = "Enable" if Aliyun_API_Enabled else "Disable"
+    Aliyun_API_Post['RR'] = Aliyun_API_RR
+    Aliyun_API_Post['Type'] = Aliyun_API_DomainType
+    Aliyun_API_Post['Value'] = Aliyun_API_DomainIP
     Aliyun_API_Post['Signature'] = AliyunSignature(Aliyun_API_Post)
     Aliyun_API_Request = Request(Aliyun_API_URL, urlencode(Aliyun_API_Post))
     Aliyun_API_Response = urlopen(Aliyun_API_Request)
@@ -172,7 +174,7 @@ else:
     if rc_value == rc_value_old:					# 检查 IP 是否匹配
         tips = get_time() + " Same DNS Record..."	# 跳过 DNS 更新
     else:
-        update_dns(rc_record_id, not {})				# 指定 DNS 更新
+        update_dns(rc_record_id,rc_value)  				# 指定 DNS 更新
         tips = get_time() + " DNS Record was updated from [" + rc_value_old + "] to [" + rc_value + "]."
         send_mail(tips)
 
