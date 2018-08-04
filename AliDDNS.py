@@ -71,7 +71,7 @@ def my_ip_chinanetwork():
     ipaddr = re.search('\d+\.\d+\.\d+\.\d+',strg).group(0)
     return ipaddr
 
-def my_ip()
+def my_ip():
     ip1 = my_ip_direct()
     ip2 = my_ip_json()
     ip3 = my_ip_popen()
